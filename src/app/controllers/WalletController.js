@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bitcoin = require('crypto-wallets');
+const api = require('../services/apiBC')
 
 const Wallet = mongoose.model('Wallet');
 const User = mongoose.model('User')
@@ -33,6 +34,18 @@ module.exports = {
 
         return res.status(200).json({
             user,
+        });
+    },
+
+    async show(req, res) {
+
+        const { address } = await Wallet.findById(req.params.id);
+
+        const walletInfo = await api.get(`${address}`);
+
+        const { final_balance } = walletInfo.data;
+        return res.status(200).json({
+            final_balance,
         });
     }
 }

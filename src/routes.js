@@ -10,8 +10,10 @@ const authMiddleware = require('./app/middlewares/auth');
 router.post('/register', UserController.store);
 
 router.post('/login', SessionController.login);
-router.post('/wallet', WalletController.store);
 
 router.use(authMiddleware);
+
+router.get('/wallet/:id', WalletController.show);
+router.post('/wallet', WalletController.store);
 
 module.exports = router;
