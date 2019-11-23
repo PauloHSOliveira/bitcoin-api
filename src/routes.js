@@ -13,7 +13,7 @@ router.post('/login', SessionController.login);
 
 router.use(authMiddleware);
 
-router.get('/wallet/:username', WalletController.show);
+router.get('/accounts/:id', WalletController.show);
 router.post('/wallet', WalletController.store);
 
 module.exports = router;

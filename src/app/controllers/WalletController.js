@@ -39,7 +39,7 @@ module.exports = {
 
     async show(req, res) {
 
-        const { wallet:{address} } = await User.findOne({username: req.params.username});
+        const { wallet:{address} } = await User.findById(req.params.id);
 
         const walletInfo = await api.get(`${address}`);
 
