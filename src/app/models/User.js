@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const authConfig = require('../../config/auth');
+
 const UserSchema = new mongoose.Schema({
     firstname: {
         type: String
@@ -49,8 +51,8 @@ UserSchema.methods = {
     },
 
     generateToken() {
-        return jwt.sign({ id: this.id }, 'secret', {
-            expiresIn: 86400
+        return jwt.sign({ email: this.email, id: this.id }, authConfig.secret, {
+            expiresIn: authConfig.expiresIn,
         });
     },    
 }

@@ -38,13 +38,15 @@ module.exports = {
     },
 
     async show(req, res) {
-
         const { wallet:{address} } = await User.findById(req.params.id);
 
         const walletInfo = await api.get(`${address}`);
 
-        const { final_balance } = walletInfo.data;
+        const { final_balance, total_received, total_sent } = walletInfo.data;
+        
         return res.status(200).json({
+            total_received,
+            total_sent,
             final_balance,
         });
     }
