@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-axios.create({
+const api = axios.create({
     baseURL: 'https://blockchain.info/rawaddr/',
     timeout: 5000,
 });
 
-module.exports = axios;
+module.exports = api;
