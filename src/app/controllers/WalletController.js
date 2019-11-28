@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bitcoin = require('crypto-wallets');
-const api = require('../services/apiBC')
+const api = require('../../config/apiBC');
 
 const Wallet = mongoose.model('Wallet');
 const User = mongoose.model('User')
