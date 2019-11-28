@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const yup = require('yup');
+const mail = require('../../lib/Mail');
 
 const User = mongoose.model('User');
 
@@ -27,6 +28,8 @@ module.exports = {
         }
         
         const { id, username, email, password } = await User.create(req.body);
+
+        await mail.sendEmail(email, username);
 
         return res.json({
             id,
