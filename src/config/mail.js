@@ -3,8 +3,8 @@ const mailConfig = {
     port: 2525,
     secure: false,
     auth: {
-        user: 'username',
-        pass: 'pass',
+        user: 'codephs',
+        pass: '88495456paulo',
     },
     default: {
         from: 'Bitnow Tem <noreply@bitnow.com>'
