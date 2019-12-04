@@ -15,8 +15,8 @@ module.exports = {
 
         const { username } = await User.findById(user_id);
 
-        const { id } = await Wallet.create({
-            owner:{
+        const { id, active } = await Wallet.create({
+            owner: {
                 owner_id: user_id,
                 owner_name: username,
             },
@@ -28,7 +28,8 @@ module.exports = {
             wallet: {
                 wallet_id: id,
                 address,
-                privatekey
+                privatekey,
+                active,
             }
         }, { new: true });
 
@@ -38,16 +39,40 @@ module.exports = {
     },
 
     async show(req, res) {
-        const { wallet:{address} } = await User.findById(req.params.id);
+        const { wallet: { address } } = await User.findById(req.params.id);
 
         const walletInfo = await api.get(`${address}`);
 
         const { final_balance, total_received, total_sent } = walletInfo.data;
-        
+
         return res.status(200).json({
             total_received,
             total_sent,
             final_balance,
+        });
+    },
+
+    async desative(req, res) {
+        const { wallet: { wallet_id } } = await User.findById(req.params.id);
+
+        const walletExists = await Wallet.findById(wallet_id);
+
+        if (!walletExists) {
+            return res.status(400).json({ error: 'Wallet dont exists' });
+        }
+
+        const desativeWallet = await Wallet.findByIdAndUpdate(wallet_id, {
+            active: false,
+        }, { new: true });
+
+        const user = await User.findByIdAndUpdate(req.params.id, {
+            wallet: {
+                active: false,
+            }
+        }, { new: true });
+        return res.status(200).json({
+            Desatived: desativeWallet,
+            user
         });
     }
 }

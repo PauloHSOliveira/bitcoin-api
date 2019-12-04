@@ -15,5 +15,6 @@ router.use(authMiddleware);
 
 router.get('/accounts/:id', WalletController.show);
 router.post('/wallet', WalletController.store);
+router.put('/update/:id', WalletController.desative);
 
 module.exports = router;
