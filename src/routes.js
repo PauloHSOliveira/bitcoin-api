@@ -1,20 +1,21 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const UserController = require('./app/controllers/UserController');
-const SessionController = require('./app/controllers/SessionController');
-const WalletController = require('./app/controllers/WalletController');
+import UserController from './app/controllers/UserController';
+import SessionController from './app/controllers/SessionController';
+import WalletController from './app/controllers/WalletController';
 
-const authMiddleware = require('./app/middlewares/auth');
+import Auth from './app/middlewares/auth';
 
-router.post('/register', UserController.store);
+const rotas = express.Router();
 
-router.post('/login', SessionController.login);
+rotas.post('/register', UserController.store);
 
-router.use(authMiddleware);
+rotas.post('/login', SessionController.login);
 
-router.get('/accounts/:id', WalletController.show);
-router.post('/wallet', WalletController.store);
-router.put('/update/:id', WalletController.desative);
+rotas.use(Auth);
 
-module.exports = router;
+rotas.get('/accounts/:id', WalletController.show);
+rotas.post('/wallet', WalletController.store);
+rotas.put('/update/:id', WalletController.desative);
+
+export default rotas;

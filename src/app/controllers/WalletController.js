@@ -1,11 +1,10 @@
-const mongoose = require('mongoose');
-const bitcoin = require('crypto-wallets');
-const api = require('../../config/apiBC');
+import * as bitcoin from 'crypto-wallets';
+import api from '../../config/apiBC';
 
-const Wallet = mongoose.model('Wallet');
-const User = mongoose.model('User')
+import User from '../models/User';
+import Wallet from '../models/Wallet';
 
-module.exports = {
+class WalletController {
     async store(req, res) {
         const { user_id } = req.headers;
 
@@ -24,22 +23,30 @@ module.exports = {
             privatekey,
         });
 
-        const user = await User.findByIdAndUpdate(user_id, {
-            wallet: {
-                wallet_id: id,
-                address,
-                privatekey,
-                active,
-            }
-        }, { new: true });
+        const user = await User.findByIdAndUpdate(
+            user_id,
+            {
+                wallet: {
+                    wallet_id: id,
+                    address,
+                    privatekey,
+                    active,
+                },
+            },
+            { new: true }
+        );
 
         return res.status(200).json({
             user,
         });
-    },
+    }
 
     async show(req, res) {
-        const { wallet: { address } } = await User.findById(req.params.id);
+        const { user_id } = req.headers;
+
+        const {
+            wallet: { address },
+        } = await User.findById(user_id);
 
         const walletInfo = await api.get(`${address}`);
 
@@ -50,10 +57,12 @@ module.exports = {
             total_sent,
             final_balance,
         });
-    },
+    }
 
     async desative(req, res) {
-        const { wallet: { wallet_id } } = await User.findById(req.params.id);
+        const {
+            wallet: { wallet_id },
+        } = await User.findById(req.params.id);
 
         const walletExists = await Wallet.findById(wallet_id);
 
@@ -61,18 +70,28 @@ module.exports = {
             return res.status(400).json({ error: 'Wallet dont exists' });
         }
 
-        const desativeWallet = await Wallet.findByIdAndUpdate(wallet_id, {
-            active: false,
-        }, { new: true });
-
-        const user = await User.findByIdAndUpdate(req.params.id, {
-            wallet: {
+        const desativeWallet = await Wallet.findByIdAndUpdate(
+            wallet_id,
+            {
                 active: false,
-            }
-        }, { new: true });
+            },
+            { new: true }
+        );
+
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            {
+                wallet: {
+                    active: false,
+                },
+            },
+            { new: true }
+        );
         return res.status(200).json({
             Desatived: desativeWallet,
-            user
+            user,
         });
     }
 }
+
+export default new WalletController();

@@ -1,9 +1,9 @@
-const nodemailer = require('nodemailer');
-const MailConfig = require('../config/mail');
+import nodemailer from 'nodemailer';
+import MailConfig from '../config/mail';
 
-module.exports = {
+class Mail {
     async sendEmail(email, username) {
-        const {host, port, auth} = MailConfig;
+        const { host, port, auth } = MailConfig;
 
         const transport = nodemailer.createTransport({
             host,
@@ -15,11 +15,17 @@ module.exports = {
             from: 'Team Bitnow <noreply@bitnow.com>',
             to: email,
             subject: `Bem vindo ao time Bitnow, ${username}!`,
-            html: '<h1>Bem vindo!</h1>'
-        }
-    
-        await transport.sendMail(emailEnviado, (info, err) => {
-            if(info) {console.log(info)} else {console.log(err)}
+            html: '<h1>Bem vindo!</h1>',
+        };
+
+        const response = await transport.sendMail(emailEnviado, (info, err) => {
+            if (info) {
+                console.log(info);
+            } else {
+                console.log(err);
+            }
         });
     }
 }
+
+export default new Mail();

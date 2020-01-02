@@ -1,13 +1,13 @@
-const jwt = require('jsonwebtoken');
-const { promisify } = require('util');
+import * as jwt from 'jsonwebtoken';
+import { promisify } from 'util';
 
-const authConfig = require('../../config/auth');
+import authConfig from '../../config/auth';
 
-module.exports = async (req, res, next) => {
+const Auth = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        return res.status(400).send({ error: 'No token provided'});
+        return res.status(400).send({ error: 'No token provided' });
     }
 
     const [, token] = authHeader.split(' ');
@@ -21,4 +21,6 @@ module.exports = async (req, res, next) => {
     } catch (err) {
         return res.status(401).json({ error: 'Token invalid' });
     }
-}
+};
+
+export default Auth;

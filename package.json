@@ -1,26 +1,33 @@
 {
-  "name": "bitcoins",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "codephs <codephs@users.noreply.github.com>",
-  "license": "MIT",
-  "dependencies": {
-    "axios": "^0.19.0",
-    "bcrypt": "^3.0.7",
-    "crypto-wallets": "^1.0.0",
-    "express": "^4.17.1",
-    "express-handlebars": "^3.1.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.12",
-    "nodemailer": "^6.3.1",
-    "nodemailer-express-handlebars": "^3.1.0",
-    "require-dir": "^1.2.0",
-    "yup": "^0.27.0"
-  },
-  "scripts": {
-    "dev": "nodemon ./src/server.js"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.0"
-  }
+    "name": "bitcoins",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "codephs <codephs@users.noreply.github.com>",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^0.19.0",
+        "bcrypt": "^3.0.7",
+        "crypto-wallets": "^1.0.0",
+        "express": "^4.17.1",
+        "express-handlebars": "^3.1.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.7.12",
+        "nodemailer": "^6.3.1",
+        "nodemailer-express-handlebars": "^3.1.0",
+        "require-dir": "^1.2.0",
+        "yup": "^0.27.0"
+    },
+    "scripts": {
+        "dev": "nodemon src/server.js",
+        "debug": "node --inspect-brk -r sucrase/register src/server.js"
+    },
+    "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-plugin-import": "^2.19.1",
+        "eslint-plugin-prettier": "^3.1.2",
+        "nodemon": "^2.0.0",
+        "prettier": "^1.19.1",
+        "sucrase": "^3.11.0"
+    }
 }

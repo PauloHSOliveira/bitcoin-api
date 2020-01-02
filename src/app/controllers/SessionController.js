@@ -1,36 +1,35 @@
-const mongoose = require('mongoose');
-const yup = require('yup');
+import * as yup from 'yup';
 
-const User = mongoose.model('User');
+import User from '../models/User';
 
-module.exports = {
+class SessionController {
     async login(req, res) {
         const schema = yup.object().shape({
-            email: yup.string()
+            email: yup
+                .string()
                 .email()
                 .required(),
-            password: yup.string().required()
+            password: yup.string().required(),
         });
 
-        if(!( await schema.isValid(req.body))) {
-            return res.status(400).json({ error: 'Validation fails'});
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({ error: 'Validation fails' });
         }
 
         const { email, password } = req.body;
 
         const user = await User.findOne({ email });
 
-        if(!user) {
+        if (!user) {
             return res.status(400).json({ error: 'Invalid email' });
         }
 
-        if(!(await user.checkPassword(password))) {
+        if (!(await user.checkPassword(password))) {
             return res.status(400).json({ error: 'Invalid password' });
         }
 
-        const {id, username} = user;
+        const { id, username } = user;
 
-        
         return res.status(200).json({
             message: 'Ok',
             user: {
@@ -38,7 +37,9 @@ module.exports = {
                 username,
                 email,
             },
-            token: user.generateToken()
+            token: user.generateToken(),
         });
     }
 }
+
+export default new SessionController();
